@@ -21,7 +21,7 @@ from Transactions.views import TransactionsViewSet
 
 
 router = routers.SimpleRouter()
-router.register(r'Transactions', TransactionsViewSet)
+router.register(r'Transactions', TransactionsViewSet, basename="Employees")
 urlpatterns = router.urls
 
 swagger = get_swagger_view(title="CRUD Operations")
