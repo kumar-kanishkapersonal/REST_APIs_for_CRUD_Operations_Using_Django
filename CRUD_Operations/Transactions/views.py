@@ -15,12 +15,11 @@ class CustomSchema(AutoSchema):
     manual_fields = []
 
     def get_manual_fields(self, path, method):
-        fields = []
         self.manual_fields = []
         if method.lower() in ["get", "delete"]:
             fields = [coreapi.Field("EMPLOYEE_ID", required=True, location="query", schema=coreschema
                                     .String())]
-        elif method.lower() == "post":
+        elif method.lower() in ["post", "patch"]:
             fields = [coreapi.Field("EMPLOYEE_ID", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("FIRST_NAME", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("LAST_NAME", required=True, location="form", schema=coreschema.String()),
@@ -32,20 +31,9 @@ class CustomSchema(AutoSchema):
                       coreapi.Field("COMMISSION_PCT", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("MANAGER_ID", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("DEPARTMENT_ID", required=True, location="form", schema=coreschema.String())]
-        elif method.lower() == "patch":
-            fields = [coreapi.Field("EMPLOYEE_ID", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("FIRST_NAME", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("LAST_NAME", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("EMAIL", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("PHONE_NUMBER", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("HIRE_DATE", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("JOB_ID", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("SALARY", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("COMMISSION_PCT", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("MANAGER_ID", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("DEPARTMENT_ID", required=True, location="form", schema=coreschema.String()),
-                      coreapi.Field("EMPLOYEE_ID", required=True, location="query", schema=coreschema.String())]
-        elif method.lower() == "put":
+            if method.lower() == "patch":
+                fields.append(coreapi.Field("EMPLOYEE_ID", required=True, location="query", schema=coreschema.String()))
+        else:
             fields = [coreapi.Field("EMPLOYEE_ID", required=True, location="query", schema=coreschema.String()),
                       coreapi.Field("ATTRIBUTE", required=True, location="query", schema=coreschema.String()),
                       coreapi.Field("VALUE", required=True, location="query", schema=coreschema.String())]
@@ -58,6 +46,7 @@ class EmployeesSerializer(serializers.ModelSerializer):
     """
     Serializer class for model.
     """
+
     class Meta:
         managed = False
         model = Employees
