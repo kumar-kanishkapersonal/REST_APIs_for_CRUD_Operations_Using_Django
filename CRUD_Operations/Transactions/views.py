@@ -16,12 +16,11 @@ class CustomSchema(AutoSchema):
 
     def get_manual_fields(self, path, method):
         fields = []
+        self.manual_fields = []
         if method.lower() in ["get", "delete"]:
-            self.manual_fields = []
             fields = [coreapi.Field("EMPLOYEE_ID", required=True, location="query", schema=coreschema
                                     .String())]
         elif method.lower() == "post":
-            self.manual_fields = []
             fields = [coreapi.Field("EMPLOYEE_ID", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("FIRST_NAME", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("LAST_NAME", required=True, location="form", schema=coreschema.String()),
@@ -34,7 +33,6 @@ class CustomSchema(AutoSchema):
                       coreapi.Field("MANAGER_ID", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("DEPARTMENT_ID", required=True, location="form", schema=coreschema.String())]
         elif method.lower() == "patch":
-            self.manual_fields = []
             fields = [coreapi.Field("EMPLOYEE_ID", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("FIRST_NAME", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("LAST_NAME", required=True, location="form", schema=coreschema.String()),
@@ -48,7 +46,6 @@ class CustomSchema(AutoSchema):
                       coreapi.Field("DEPARTMENT_ID", required=True, location="form", schema=coreschema.String()),
                       coreapi.Field("EMPLOYEE_ID", required=True, location="query", schema=coreschema.String())]
         elif method.lower() == "put":
-            self.manual_fields = []
             fields = [coreapi.Field("EMPLOYEE_ID", required=True, location="query", schema=coreschema.String()),
                       coreapi.Field("ATTRIBUTE", required=True, location="query", schema=coreschema.String()),
                       coreapi.Field("VALUE", required=True, location="query", schema=coreschema.String())]
